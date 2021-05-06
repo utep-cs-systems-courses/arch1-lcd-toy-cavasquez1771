@@ -25,11 +25,11 @@ main()
   drawString11x16(20,20, "hey", COLOR_GREEN, COLOR_BLUE);
 
   drawFish(startCol, 60, 15, COLOR_RED);
-  drawDiamond(60, 60, 15, COLOR_YELLOW);
+  drawDiamond(60, 150, 15, COLOR_YELLOW);
 
   while(1){
-    startCol -= 5;
-    clearScreen(COLOR_BLUE);
+    drawFish(startCol, 60, 15, COLOR_BLUE);
+    startCol -= 1;
     drawFish(startCol, 60, 15, COLOR_RED);
     
     
