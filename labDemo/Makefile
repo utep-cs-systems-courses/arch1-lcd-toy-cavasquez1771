@@ -1,0 +1,32 @@
+# makfile configuration
+
+CPU             	= msp430g2553
+CFLAGS          	= -mmcu=${CPU} -Os -I../h
+LDFLAGS		= -L../lib -L/opt/ti/msp430_gcc/include/
+
+#switch the compiler (for the internal make rules)
+CC              = msp430-elf-gcc
+AS              = msp430-elf-gcc -mmcu=${CPU} -c
+
+all: libLcd.a labDemo.elf
+
+libLcd.a: font-11x16.o lcdutils.o lcddraw.o
+	$(AR) crs $@ $^
+
+lcddraw.o: lcddraw.c lcddraw.h lcdutils.h
+lcdutils.o: lcdutils.c lcdutils.h
+buzzer.o: buzzer.h
+
+install: libLcd.a
+	mkdir -p ../h ../lib
+	mv $^ ../lib
+	cp *.h ../h
+
+clean:
+	rm -f libLcd.a *.o *.elf 
+
+drawing.elf: $(COMMON_OBJECTS) main.o libLcd.a wdt_handlers.o buzzer.o
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ -lTimer -lp2sw  -lLcd
+
+load: drawing.elf
+	msp430loader.sh $^

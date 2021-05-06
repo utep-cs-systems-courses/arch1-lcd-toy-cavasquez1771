@@ -1,0 +1,8 @@
+#ifndef movement_included
+#define movement_included
+
+void updateDiamond();
+
+void moveFishL();
+
+void moveFishR();
